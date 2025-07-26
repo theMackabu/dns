@@ -29,7 +29,7 @@ func NewUpstreamResolver(servers []string, timeout time.Duration, retries int, l
 		timeout: timeout,
 		retries: retries,
 		client: &dns.Client{
-			Net:     "udp",
+			Net:     "udp4",
 			Timeout: timeout,
 		},
 		logger: logger,

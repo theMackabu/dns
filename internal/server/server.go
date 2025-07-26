@@ -56,7 +56,7 @@ func NewServer(cfg *config.Config, logger *logrus.Logger) (*Server, error) {
 
 	server := &dns.Server{
 		Addr:         addr,
-		Net:          "udp",
+		Net:          "udp4",
 		Handler:      handler,
 		ReadTimeout:  cfg.Server.ReadTimeout,
 		WriteTimeout: cfg.Server.WriteTimeout,
