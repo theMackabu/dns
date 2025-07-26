@@ -8,5 +8,6 @@
 go.work
 *.log
 *.pid
+*.gob
 /dns-server
 config.toml

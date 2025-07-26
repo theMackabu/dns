@@ -100,8 +100,6 @@ func (s *Server) Start(ctx context.Context) error {
 		if err := s.server.ShutdownContext(shutdownCtx); err != nil {
 			s.logger.WithError(err).Error("error during server shutdown")
 		}
-
-		s.Stop()
 	}()
 
 	if err := s.waitForServer(); err != nil {
@@ -116,23 +114,23 @@ func (s *Server) Stop() {
 	s.logger.Info("stopping DNS server")
 
 	if s.cache != nil {
+		if lruCache, ok := s.cache.(*cache.LRUCache); ok {
+			lruCache.Close()
+		}
+
 		if err := s.cache.DumpToFile("dns-cache.gob"); err != nil {
 			s.logger.WithError(err).Warn("failed to dump cache to disk")
 		} else {
 			s.logger.Info("cache dumped to dns-cache.gob")
 		}
-
-		if lruCache, ok := s.cache.(*cache.LRUCache); ok {
-			lruCache.Close()
-		}
 	}
 
-	s.wg.Wait()
 	s.logger.Info("DNS server stopped")
 }
 
 func (s *Server) Wait() {
 	s.wg.Wait()
+	s.Stop()
 }
 
 func (s *Server) waitForServer() error {
