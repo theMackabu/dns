@@ -1,0 +1,45 @@
+[server]
+port = 53
+bind_address = "0.0.0.0"
+read_timeout = "5s"
+write_timeout = "5s"
+
+[cache]
+max_entries = 10000
+default_ttl = "300s"
+cleanup_interval = "60s"
+
+[upstream]
+servers = ["1.1.1.1:53", "8.8.8.8:53"]
+timeout = "2s"
+retries = 3
+
+[logging]
+level = "info"
+format = "json"
+
+[records.A]
+"hello.world" = "192.168.1.100"
+"api.local" = "127.0.0.1"
+"test.example" = "10.0.0.50"
+
+[records.AAAA]
+"ipv6.local" = "::1"
+"hello.world" = "2001:db8::1"
+
+[records.CNAME]
+"www.hello.world" = "hello.world"
+"cdn.local" = "api.local"
+
+[records.MX]
+"hello.world" = { priority = 10, target = "mail.hello.world" }
+"local.domain" = { priority = 20, target = "backup-mail.local.domain" }
+
+[records.TXT]
+"hello.world" = "v=spf1 include:_spf.google.com ~all"
+"_dmarc.hello.world" = "v=DMARC1; p=quarantine; rua=mailto:dmarc@hello.world"
+
+# wildcard support examples:
+# [records.A]
+# "*.dev.local" = "192.168.1.200"  # all subdomains of dev.local
+# "*.api.hello.world" = "10.0.0.100" # all api endpoints
