@@ -150,16 +150,3 @@ func (s *Server) waitForServer() error {
 	}
 	return nil
 }
-
-func (s *Server) GetStats() map[string]any {
-	stats := map[string]any{
-		"cache_size":     s.cache.Size(),
-		"server_address": s.server.Addr,
-	}
-
-	if upstreamResolver, ok := s.resolver.(*upstream.UpstreamResolver); ok {
-		stats["upstream_servers"] = upstreamResolver.GetServers()
-	}
-
-	return stats
-}

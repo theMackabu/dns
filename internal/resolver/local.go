@@ -402,18 +402,3 @@ func (r *LocalResolver) resolveWildcard(domain string, question dns.Question) (*
 
 	return nil, false
 }
-
-func (r *LocalResolver) UpdateRecords(records *config.RecordsConfig) {
-	r.records = records
-	r.logger.Info("local DNS records updated")
-}
-
-func (r *LocalResolver) GetRecordCount() map[string]int {
-	return map[string]int{
-		"A":     len(r.records.A),
-		"AAAA":  len(r.records.AAAA),
-		"CNAME": len(r.records.CNAME),
-		"MX":    len(r.records.MX),
-		"TXT":   len(r.records.TXT),
-	}
-}
